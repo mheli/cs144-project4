@@ -1,0 +1,43 @@
+#searchBox {
+	position: relative;
+    width: 100%;
+}
+
+.searchbar {
+    width: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#searchInput {
+    background-color: transparent;
+}
+
+#ghostAhead{
+    background-color: white;
+    pointer-events: none;
+    z-index: -1;
+}
+
+#submitButton {
+    margin-left: calc(50% + 6px);
+}
+
+#dropDown {
+    width: 50%;
+    border: 1px solid black;
+    visibility: hidden;
+    background-color: white;
+    position: absolute;
+    cursor: default;
+}
+
+#dropDown div{
+    padding: 0px 3px;
+}
+
+#dropDown div.current{
+    background-color: #3366cc;
+    color: white;    
+}
