@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/autosuggest.css">
+	<link rel="stylesheet" type="text/css" href="css/searchresults.css">
 </head>
 <body onload="giveSuggestions()">
-	<form action="/eBay/search">
+	<form action="search">
 		<div id="searchBox">
 	    	<input type="text" name="q" id="searchInput" class="searchbar" autocomplete="off" value="${param.q}"/>
 	    	<input type="text" id="ghostAhead" class="searchbar" autocomplete="off" tabIndex="-1"/>
@@ -24,20 +24,22 @@
 				</tr>
 		</c:forEach>
 	</table>
-	<c:choose>
-		<c:when test="${param.numResultsToSkip eq '0'}">
-		</c:when>
-		<c:when test="${param.numResultsToSkip - param.numResultsToReturn <'0'}">
-			<a href="search?q=${queryURL}&numResultsToSkip=&numResultsToReturn=${param.numResultsToReturn}">Previous</a>
-		</c:when>
-		<c:otherwise>
-			<a href="search?q=${queryURL}&numResultsToSkip=${param.numResultsToSkip-param.numResultsToReturn}&numResultsToReturn=${param.numResultsToReturn}">Previous</a>
-		</c:otherwise>
-	</c:choose>
-	<fmt:parseNumber var="returnedResults" type="number" value="${param.numResultsToReturn}" />
-	<c:if test="${fn:length(results) eq param.numResultsToReturn}">
-		<a href="search?q=${queryURL}&numResultsToSkip=${param.numResultsToSkip+param.numResultsToReturn}&numResultsToReturn=${param.numResultsToReturn}">Next</a>
-	</c:if>
+	<div class="footer">
+		<div class="pagination">
+			<c:choose>
+				<c:when test="${param.numResultsToSkip eq '0'}"></c:when>
+				<c:when test="${param.numResultsToSkip - param.numResultsToReturn <'0'}">
+					<a class="prev" href="search?q=${queryURL}&numResultsToSkip=&numResultsToReturn=${param.numResultsToReturn}">&lt; Previous</a>
+				</c:when>
+				<c:otherwise>
+					<a class="prev" href="search?q=${queryURL}&numResultsToSkip=${param.numResultsToSkip-param.numResultsToReturn}&numResultsToReturn=${param.numResultsToReturn}">&lt; Previous</a>
+				</c:otherwise>
+			</c:choose>
+			<c:if test="${fn:length(results) eq param.numResultsToReturn}">
+				<a class="next" href="search?q=${queryURL}&numResultsToSkip=${param.numResultsToSkip+param.numResultsToReturn}&numResultsToReturn=${param.numResultsToReturn}">Next &gt;</a>
+			</c:if>
+		</div>
+	</div>
 	<script type="text/javascript" src="js/suggestionRetriever.js"></script>
 	<script type="text/javascript" src="js/autoSuggestControl.js"></script>
 	<script type="text/javascript">

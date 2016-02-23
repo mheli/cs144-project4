@@ -9,7 +9,7 @@ SuggestionRetriever.prototype.sendAjaxRequest = function (sInput, oAutoSuggestCo
 		oAutoSuggestControl.noInput();
 	}
 	else {
-		var request = "/eBay/suggest?q="+encodeURIComponent(sInput);
+		var request = "suggest?q="+encodeURIComponent(sInput);
 		oThis.xmlHttp.open("GET", request);
 		oThis.xmlHttp.onreadystatechange = function () {
 			oThis.getSuggestions(oAutoSuggestControl);

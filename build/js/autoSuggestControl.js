@@ -159,9 +159,9 @@ AutoSuggestControl.prototype.updateDropDown = function(saSuggestions) {
 		}
 
 		oNode.onclick = function() {
-			var action = "/eBay/search?numResultsToSkip=0&numResultsToReturn=20&q=";
+			var action = "search?numResultsToSkip=0&numResultsToReturn=20&q=";
 			var link = action + encodeURIComponent(this.textContent);
-			window.location.href = link;
+			window.location = link;
 		}
 	}
 
