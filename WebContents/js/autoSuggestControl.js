@@ -47,17 +47,19 @@ AutoSuggestControl.prototype.onkeyupHandler = function (oEvent){
 		// windows key: 19, esc: 27, home: 36, page up: 33
 		// page down: 34, end: 35
 		// up: 38, down: 40, left: 37, right: 39
+		/* don't need because text box is filled with selection
 		case 13:
 		// enter
 			if (this.highlighted != -1){
 				var link = "";
 				for (var i = 0; i < this.dropDown.childNodes.length; i++){
 					oNode = this.dropDown.childNodes[i];
-					if (oNode.className == "current")
+					if (oNode.className == "current");
 						oNode.click();
 				}
 			}
 			break;
+		*/
 		case 27:
 		// esc
 			this.hideSuggestions();
@@ -135,9 +137,8 @@ AutoSuggestControl.prototype.updateTypeAhead = function(sSuggestion) {
 AutoSuggestControl.prototype.updateDropDown = function(saSuggestions) {
 	var oThis = this;
 	var htmlCode = "";
-	var action = "/eBay/search?numResultsToSkip=0&numResultsToReturn=20&q=";
 	for (var i = 0; i < saSuggestions.length; i++){
-		htmlCode += "<a href=\""+action+encodeURIComponent(saSuggestions[i])+"\"><div>" + saSuggestions[i] + "</div></a>";
+		htmlCode += "<div>" + saSuggestions[i] + "</div>";
 	}
 	oThis.dropDown.innerHTML = htmlCode;
 
@@ -155,6 +156,12 @@ AutoSuggestControl.prototype.updateDropDown = function(saSuggestions) {
 		oNode.onmouseout = function (){
 			oThis.highlighted = -1;
 			oThis.clearHighlights();
+		}
+
+		oNode.onclick = function() {
+			var action = "/eBay/search?numResultsToSkip=0&numResultsToReturn=20&q=";
+			var link = action + encodeURIComponent(this.textContent);
+			window.location = link;
 		}
 	}
 
@@ -177,7 +184,6 @@ AutoSuggestControl.prototype.highlightSuggestion = function () {
 		var oNode = oThis.dropDown.childNodes[i];
 		if (i == oThis.highlighted){
 			oNode.className = "current";
-			//oThis.textbox.value = oNode.textContent;
 		} else {
 			oNode.className = "";
 		}

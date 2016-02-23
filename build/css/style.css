@@ -37,16 +37,11 @@ body {
     cursor: default;
 }
 
-#dropDown a{
-    text-decoration: none;
-    color: black;
-}
-
-#dropDown a div{
+#dropDown div{
     padding: 0px 3px;
 }
 
-#dropDown a.current div{
+#dropDown div.current{
     background-color: #3366cc;
     color: white;    
 }

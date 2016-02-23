@@ -9,7 +9,7 @@
 <body onload="giveSuggestions()">
 	<form action="/eBay/search">
 		<div id="searchBox">
-	    	<input type="text" name="q" id="searchInput" class="searchbar" autocomplete="off"/>
+	    	<input type="text" name="q" id="searchInput" class="searchbar" autocomplete="off" value="${param.q}"/>
 	    	<input type="text" id="ghostAhead" class="searchbar" autocomplete="off" tabIndex="-1"/>
 		    <input type="submit" value="Search" id="submitButton">
 	    	<div id="dropDown"></div>
@@ -28,15 +28,15 @@
 		<c:when test="${param.numResultsToSkip eq '0'}">
 		</c:when>
 		<c:when test="${param.numResultsToSkip - param.numResultsToReturn <'0'}">
-			<a href="search?q=${param.q}&numResultsToSkip=0&numResultsToReturn=${param.numResultsToReturn}">Previous</a>
+			<a href="search?q=${queryURL}&numResultsToSkip=&numResultsToReturn=${param.numResultsToReturn}">Previous</a>
 		</c:when>
 		<c:otherwise>
-			<a href="search?q=${param.q}&numResultsToSkip=${param.numResultsToSkip-param.numResultsToReturn}&numResultsToReturn=${param.numResultsToReturn}">Previous</a>
+			<a href="search?q=${queryURL}&numResultsToSkip=${param.numResultsToSkip-param.numResultsToReturn}&numResultsToReturn=${param.numResultsToReturn}">Previous</a>
 		</c:otherwise>
 	</c:choose>
 	<fmt:parseNumber var="returnedResults" type="number" value="${param.numResultsToReturn}" />
 	<c:if test="${fn:length(results) eq param.numResultsToReturn}">
-		<a href="search?q=${param.q}&numResultsToSkip=${param.numResultsToSkip+param.numResultsToReturn}&numResultsToReturn=${param.numResultsToReturn}">Next</a>
+		<a href="search?q=${queryURL}&numResultsToSkip=${param.numResultsToSkip+param.numResultsToReturn}&numResultsToReturn=${param.numResultsToReturn}">Next</a>
 	</c:if>
 	<script type="text/javascript" src="js/suggestionRetriever.js"></script>
 	<script type="text/javascript" src="js/autoSuggestControl.js"></script>
