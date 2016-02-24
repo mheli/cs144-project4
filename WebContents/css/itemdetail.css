@@ -1,3 +1,60 @@
+html {
+	height:100%;
+}
+
+body {
+	height:100%;
+}
+
+div.container {
+	width: 95%;
+	height: 100%;
+}
+
+div.important {
+	margin: auto;
+	display: table;
+	width: 100%;
+}
+
+div.important div.prices{
+	float: left;
+	margin-right: 50px;
+	border: 1px solid black;
+	padding: 20px;
+}
+
+div.important div.seller{
+	float: right;
+	border: 1px solid black;
+	padding: 20px;
+}
+
+div.important div.seller h2{
+	margin: 0;
+}
+
+div.misc {
+	clear: both;
+	height: 100%;
+}
+
+td.firstCol{
+	padding: 0;
+}
+
+#map_canvas {
+	height: 500px;
+	width: 500px;
+} 
+
+#bidtable {
+	visibility: hidden;
+	position: absolute;
+	border: 1px solid black;
+	background-color: white;
+}
+
 table td{
 	padding:0 15px;
 }

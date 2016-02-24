@@ -3,11 +3,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html>
 <head>
+	   <meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="css/autosuggest.css">
 	<link rel="stylesheet" type="text/css" href="css/searchresults.css">
 </head>
 <body onload="giveSuggestions()">
-	<form action="search">
+	<form action="search" accept-charset="utf-8">
 		<div id="searchBox">
 	    	<input type="text" name="q" id="searchInput" class="searchbar" autocomplete="off" value="${param.q}"/>
 	    	<input type="text" id="ghostAhead" class="searchbar" autocomplete="off" tabIndex="-1"/>
@@ -20,7 +21,7 @@
 	<table>
 		<c:forEach items="${results}" var="result">
 				<tr>
-					<td><a href="item?id=${result.itemId}">${result.name}</a></td>
+					<td><a href="item?id=${result.itemId}">${result.name} (${result.itemId})</a></td>
 				</tr>
 		</c:forEach>
 	</table>

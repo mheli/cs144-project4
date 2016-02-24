@@ -4,89 +4,144 @@
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="css/itemdetail.css">
+   <meta charset="UTF-8">
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" /> 
-	<style type="text/css"> 
-	  html { height: 100% } 
-	  body { height: 100%;} 
-	  #map_canvas { height: 80%; width: 80%; } 
-	</style> 
 	<script type="text/javascript" 
     src="http://maps.google.com/maps/api/js?"> 
 	</script> 
 	<script type="text/javascript"> 
-	  function initialize() { 
-	    var latlng = new google.maps.LatLng(${item.latitude},${item.longitude}); 
-	    var myOptions = { 
-	      zoom: 14, // default is 8  
-	      center: latlng, 
-	      mapTypeId: google.maps.MapTypeId.ROADMAP 
-	    }; 
-	    var map = new google.maps.Map(document.getElementById("map_canvas"),
-	        myOptions); 
-	  } 
-	</script> 
-
+	    function showBids() {
+    		oBidTable = document.getElementById("bidtable");
+    		if (oBidTable.style.visibility != "visible")
+	    		oBidTable.style.visibility = "visible";
+	    	else
+	    		oBidTable.style.visibility = "hidden";
+	    }
+	</script>
+	<script type="text/javascript">
+		function loadMap(){
+			//dummy function
+		}
+	</script>
 </head>
-<body onload="initialize()">
-    <form action="item">
-	    <input type="text" name="id">
-	    <input type="submit" value="Item Lookup">
-    </form>
+<body onload="loadMap()">
+<c:choose>
+	<c:when test="${not empty item}">
+		<div class="container">
+			<div class="itemlookup">
+			    <form action="item" accept-charset="utf-8">
+				    <input type="text" name="id">
+				    <input type="submit" value="Item Lookup">
+			    </form>
+			</div>
+		    <div class="important">
+				<h1>${item.name} (${item.itemID})</h1>
+				<div class="prices">
+					<p>Started: ${item.started}</p>
+					<p>Ends: ${item.ends}</p>
+					<c:choose>
+						<c:when test="${item.numberOfBids eq '0'}">
+							<p>Starting bid: ${item.currently}</p>
+						</c:when>
+						<c:otherwise>
+							<p>Current bid: ${item.currently}</p>
+						</c:otherwise>
+					</c:choose>
+					<c:if test="${not empty item.buyPrice}">
+						<p>Buy price: ${item.buyPrice}</p>
+					</c:if>
+					<p id="showbids"><a href="javascript:void(0)" onclick="showBids();">${item.numberOfBids} bids</a></p>
+					<c:choose>
+						<c:when test="${item.numberOfBids eq '0'}">
+						</c:when>
+						<c:otherwise>
+							<table id="bidtable">
+								<tr>
+									<td>Time</td>
+									<td>Amount</td>
+									<td>Bidder</td>
+								</tr>
+								<c:forEach items="${item.bids}" var="bid">
+										<tr>
+											<td>${bid.time}</td>
+											<td>${bid.amount}</td>
+											<td>${bid.bidderUID} (${bid.rating})</td>
+										</tr>
+								</c:forEach>
+							</table>
+						</c:otherwise>		
+					</c:choose>
+				</div>
+				<div class="seller">
+					<h2>Seller information</h2>
+					<p>${item.seller} (${item.sellerRating})</p>		
+				</div>
+		    </div>
 
-	<h1>${item.name}</h1>
-	<c:choose>
-		<c:when test="${not empty item.description}">
-			<p>${item.description}</p>
-		</c:when>
-		<c:otherwise>
-			<p>No description.</p>
-		</c:otherwise>
-	</c:choose>
-	<table>
-		<tr>
-		<td>Categories:</td>
-		<c:forEach items="${item.categories}" var="category">
-			<td>${category}</td>
-		</c:forEach>
-		</tr>
-	</table>
+		    <div class="misc">
+		    	<h2>Item information</h2>
+				<table>
+					<tr>
+					<td class="firstCol">Categories:</td>
+					<c:forEach items="${item.categories}" var="category">
+						<td>${category}</td>
+					</c:forEach>
+					</tr>
+				</table>
+				<c:choose>
+					<c:when test="${not empty item.description}">
+						<p>${item.description}</p>
+					</c:when>
+					<c:otherwise>
+						<p>No description.</p>
+					</c:otherwise>
+				</c:choose>
+				<c:choose>
+					<c:when test="${not empty item.latitude}">
+						<p>Location: ${item.location} (${item.latitude}, ${item.longitude})</p>
+						<p>Country: ${item.country}</p>
+						<script type="text/javascript">
+						function loadMap() {
+						    var latlng = new google.maps.LatLng(${item.latitude},${item.longitude}); 	  		
+						    var myOptions = { 
+						      zoom: 14, // default is 8  
+						      center: latlng, 
+						      mapTypeId: google.maps.MapTypeId.ROADMAP 
+						    }; 
+						    var map = new google.maps.Map(document.getElementById("map_canvas"),
+						        myOptions); 
+						    var marker = new google.maps.Marker({
+						    	position: latlng,
+						    	map: map,
+						    });
+						}
+						</script> 
+					</c:when>
+					<c:otherwise>
+						<p>Location: ${item.location}</p>
+						<p>Country: ${item.country}</p>
+						<script type="text/javascript">
+						function loadMap() {
+					  		var latlng = new google.maps.LatLng("34.0621361","-118.4463541");
+						    var myOptions = { 
+						      zoom: 0, // default is 8  
+						      center: latlng, 
+						      mapTypeId: google.maps.MapTypeId.ROADMAP 
+						    }; 
+						    var map = new google.maps.Map(document.getElementById("map_canvas"),
+						        myOptions); 						
+						}
+						</script>	
+					</c:otherwise>
+				</c:choose>
+				<div id="map_canvas"></div>
+		    </div>
 
-
-	<p>Seller: ${item.seller} Rating: ${item.sellerRating}</p>
-	<p>Item ID: ${item.itemID}</p>
-	<c:choose>
-		<c:when test="${not empty item.latitude}">
-			<p>Location: ${item.location} (${item.latitude}, ${item.longitude}) Country: ${item.country}</p>
-			<div id="map_canvas"></div>
-		</c:when>
-		<c:otherwise>
-			<p>Location: ${item.location} Country: ${item.country}</p>			
-		</c:otherwise>
-	</c:choose>
-
-	<p>Started: ${item.started} Ends: ${item.ends}</p>
-	<p>Currently: ${item.currently}</p>
-	<c:if test="${not empty item.buyPrice}">
-		<p>Buy Price: ${item.buyPrice}</p>
-	</c:if>
-	<c:choose>
-		<c:when test="${item.numberOfBids eq '0'}">
-			<p>Min Bid: ${item.firstBid}</p>
-		</c:when>
-		<c:otherwise>
-			<p>Bids:</p>
-			<table>
-				<c:forEach items="${item.bids}" var="bid">
-						<tr>
-							<td>${bid.time}</td>
-							<td>${bid.amount}</td>
-							<td>${bid.bidderUID}</td>
-							<td>${bid.rating}</td>
-						</tr>
-				</c:forEach>
-			</table>
-		</c:otherwise>		
-	</c:choose>
-
+		</div>
+	</c:when>
+	<c:otherwise>
+		<h1>No item found for id "${param.id}"</h1>
+	</c:otherwise>
+</c:choose>
 </body>
 </html>

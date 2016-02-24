@@ -51,9 +51,9 @@ import java.io.PrintWriter;
 
 public class MyParser {
     
-    private static Map<String, String> itemMap = new HashMap<String, String>();
-    private static List<String> categoryList = new ArrayList<String>();
-    private static List<Bid> bidList = new ArrayList<Bid>();
+    private Map<String, String> itemMap = new HashMap<String, String>();
+    private List<String> categoryList = new ArrayList<String>();
+    private List<Bid> bidList = new ArrayList<Bid>();
 
     public Map<String, String> getItemMap(){
         return itemMap;
@@ -69,7 +69,7 @@ public class MyParser {
 
     /* Non-recursive (NR) version of Node.getElementsByTagName(...)
      */
-    private static Element[] getElementsByTagNameNR(Element e, String tagName) {
+    private Element[] getElementsByTagNameNR(Element e, String tagName) {
         Vector< Element > elements = new Vector< Element >();
         Node child = e.getFirstChild();
         while (child != null) {
@@ -87,7 +87,7 @@ public class MyParser {
     /* Returns the first subelement of e matching the given tagName, or
      * null if one does not exist. NR means Non-Recursive.
      */
-    private static Element getElementByTagNameNR(Element e, String tagName) {
+    private Element getElementByTagNameNR(Element e, String tagName) {
         Node child = e.getFirstChild();
         while (child != null) {
             if (child instanceof Element && child.getNodeName().equals(tagName))
@@ -100,7 +100,7 @@ public class MyParser {
     /* Returns the text associated with the given element (which must have
      * type #PCDATA) as child, or "" if it contains no text.
      */
-    private static String getElementText(Element e) {
+    private String getElementText(Element e) {
         if (e.getChildNodes().getLength() == 1) {
             Text elementText = (Text) e.getFirstChild();
             return elementText.getNodeValue();
@@ -113,7 +113,7 @@ public class MyParser {
     /* Returns the attribute associated with the given tagName 
      * or "" if the attribute does not have a specified or default value
      */
-    private static String getAttributeTextByTagName(Element e, String tagName) {
+    private String getAttributeTextByTagName(Element e, String tagName) {
         return e.getAttribute(tagName);
     }
 
@@ -121,7 +121,7 @@ public class MyParser {
      * of e with the given tagName. If no such X exists or X contains no
      * text, "" is returned. NR means Non-Recursive.
      */
-    private static String getElementTextByTagNameNR(Element e, String tagName) {
+    private String getElementTextByTagNameNR(Element e, String tagName) {
         Element elem = getElementByTagNameNR(e, tagName);
         if (elem != null)
             return getElementText(elem);
@@ -133,7 +133,7 @@ public class MyParser {
      * of e with the given tagName. If no such subelements exist or 
      * subelements contains no text, "" is returned.
      */
-    private static String[] getAllElementTextByTagName(Element e, String tagName) {
+    private String[] getAllElementTextByTagName(Element e, String tagName) {
         Element[] elements = getElementsByTagNameNR(e, tagName);
         Vector< String > texts = new Vector< String >();
         for (int i = 0; i < elements.length; i++){
@@ -145,7 +145,7 @@ public class MyParser {
         return result;
     }
 
-    public static void processFile(Document xmlFile) {
+    public void processFile(Document xmlFile) {
         Document doc = xmlFile;
 
         // Get root element "Item"
@@ -174,7 +174,6 @@ public class MyParser {
 
         // Categories (at least one)
         String[] categories = getAllElementTextByTagName(current, "Category");
-        List<String> listCategories = new ArrayList<String>();
         for (int j = 0; j < categories.length; j++){
             categoryList.add(categories[j]);
         }
@@ -198,7 +197,6 @@ public class MyParser {
         // bids (0 or more)
         Element eBids = getElementByTagNameNR(current, "Bids");
         Element[] bids = getElementsByTagNameNR(eBids, "Bid");
-        List<Bid> listBids = new ArrayList<Bid>();
         for (int k = 0; k < bids.length; k++){
             // Bidder
             Element eBidder = getElementByTagNameNR(bids[k], "Bidder");
@@ -223,6 +221,7 @@ public class MyParser {
 
             bidList.add(new Bid(bidderUID, time, amount, bidderRating, bidderLocation, bidderCountry));
         }
+        Collections.sort(bidList);
 
         // location
         Element eLocation = getElementByTagNameNR(current, "Location");
