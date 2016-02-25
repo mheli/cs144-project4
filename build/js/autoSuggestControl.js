@@ -1,6 +1,7 @@
-function AutoSuggestControl(oTextbox, oGhost, oDropDown, oProvider){
-	this.dropDown = oDropDown; // holds drop down div
-	this.typeAhead = oGhost; // holds type ahead div
+function AutoSuggestControl(oTextbox, oGhost, oDropDown, oProvider, oToggle) {
+	this.dropDown = oDropDown; // holds drop down list
+    this.dropDownToggle = oToggle; // holds the toggle element
+    this.typeAhead = oGhost; // holds type ahead div
 	this.userInput = "";
 	this.provider = oProvider;
 	this.textbox = oTextbox;
@@ -8,13 +9,18 @@ function AutoSuggestControl(oTextbox, oGhost, oDropDown, oProvider){
     this.init();
 }
 
-AutoSuggestControl.prototype.init = function (){
+AutoSuggestControl.prototype.init = function () {
 	var oThis = this;
 
-	this.textbox.onkeyup = function(oEvent) {
+	this.textbox.onkeyup = function (oEvent) {
 		oEvent = oEvent || window.event;
 		oThis.onkeyupHandler(oEvent);
 	}
+    
+    this.textbox.onkeydown = function (oEvent) {
+        oEvent = oEvent || window.event;
+        oThis.hideTypeAhead();
+    }
 
 	this.textbox.oninput = function() {
 		oThis.getSuggestions();
@@ -138,7 +144,7 @@ AutoSuggestControl.prototype.updateDropDown = function(saSuggestions) {
 	var oThis = this;
 	var htmlCode = "";
 	for (var i = 0; i < saSuggestions.length; i++){
-		htmlCode += "<div>" + saSuggestions[i] + "</div>";
+		htmlCode += "<li>" + saSuggestions[i] + "</li>";
 	}
 	oThis.dropDown.innerHTML = htmlCode;
 
@@ -165,11 +171,11 @@ AutoSuggestControl.prototype.updateDropDown = function(saSuggestions) {
 		}
 	}
 
-	this.dropDown.style.visibility = "visible";
+	this.dropDownToggle.className = "dropdown open";
 }
 
 AutoSuggestControl.prototype.hideSuggestions = function() {
-	this.dropDown.style.visibility = "hidden";
+	this.dropDownToggle.className = "dropdown";
 	this.highlighted = -1;
 }
 

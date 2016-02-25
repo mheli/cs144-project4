@@ -1,33 +1,3 @@
 table {
-	margin-top: 20px;
-}
-
-table a {
-	text-decoration: none;
-}
-
-table td {
-	padding-bottom: 20px;
-}
-
-div.footer {
-	width: 100%;
-	padding-bottom: 20px;
-}
-
-div.pagination {
-	margin: auto; /* margin to center align */
-	width: 50%;
-}
-
-div.footer div.pagination a{
-	text-decoration: none;
-}
-
-div.footer div.pagination a.prev{
-	float: left;
-}
-
-div.footer div.pagination a.next{
-	float: right;
+    text-align: left;
 }
