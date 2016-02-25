@@ -89,7 +89,6 @@
       <div class="container">
           <div class="col-md-7">
               <h1>${item.name}</h1>
-              <p>${item.description}</p>
           </div>
           <div class="col-md-5">
               <div class="panel panel-default">
@@ -101,32 +100,12 @@
                   </div>
                 </div>
               <div class="panel panel-default">
-              <div class="panel-body">
-                  <p><small><a href="javascript:void(0);" onclick="toggleBids();">${item.numberOfBids} bids</a></small></p>
+              <div class="panel-body">     
                   
-                  <div class="dropdown" id="bidDropDown">
-                      <table class="table table-hover table-condensed dropdown-menu">
-                          <thead>
-                              <tr>
-                                  <th>Time</th>
-                                  <th>Amount</th>
-                                  <th>Bidder</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <c:forEach items="${item.bids}" var="bid">
-                            <tr>
-                                <td>${bid.time}</td>
-                                <td>${bid.amount}</td>
-                                <td>${bid.bidderUID} (${bid.rating})</td>
-                            </tr>
-                              </c:forEach>
-                          </tbody>
-                      </table>
-                  </div>
-                  
-                  
-                  
+                <c:if test="${not empty item.buyPrice}">
+                    <hr>
+                    <p><small>Buy price: </small>${item.buyPrice}</p>
+                </c:if>
                 <c:choose>
                     <c:when test="${item.numberOfBids eq '0'}">
                         <p><small>Starting bid: </small><mark>${item.currently}</mark></p>
@@ -135,10 +114,32 @@
                         <p><small>Current bid: </small><mark>${item.currently}</mark></p>
                     </c:otherwise>
                 </c:choose>
-                <c:if test="${not empty item.buyPrice}">
-                    <hr>
-                    <p><small>Buy price: </small>${item.buyPrice}</p>
-                </c:if>
+                  <p><small><a href="javascript:void(0);" onclick="toggleBids();">${item.numberOfBids} bids</a></small></p>
+                  
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-default" onclick="toggleBids();">${item.numberOfBids} bids</button>
+                      <div class="dropdown" id="bidDropDown">
+                          <table class="table table-hover table-condensed dropdown-menu">
+                              <thead>
+                                  <tr>
+                                      <th>Time</th>
+                                      <th>Amount</th>
+                                      <th>Bidder</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <c:forEach items="${item.bids}" var="bid">
+                                <tr>
+                                    <td>${bid.time}</td>
+                                    <td>${bid.amount}</td>
+                                    <td>${bid.bidderUID} (${bid.rating})</td>
+                                </tr>
+                                  </c:forEach>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+
               </div>
             </div>
           </div>
@@ -209,6 +210,13 @@
 
     </div> <!-- /container -->
          
+    <div class="container">
+        <dl>
+            <dt>Description</dt>
+            <dd>${item.description}</dd>
+        </dl>
+     </div>
+         
              <script type="text/javascript" 
     src="http://maps.google.com/maps/api/js?"> 
 	</script>
@@ -226,7 +234,9 @@
         </c:when>
         <c:otherwise>
             <div class="container">
-                <div class="alert alert-danger" role="alert">Your search - <strong>${param.id}</strong> - did not match any items.</div>
+                <div class="starter-template">
+                    <div class="alert alert-info" role="alert">Your id - <strong>${param.id}</strong> - did not match any items.</div>
+                </div>
             </div>
         </c:otherwise>
       </c:choose>

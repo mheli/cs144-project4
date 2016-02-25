@@ -1,6 +1,5 @@
-function AutoSuggestControl(oTextbox, oGhost, oDropDown, oProvider, oToggle) {
-	this.dropDown = oDropDown; // holds drop down list
-    this.dropDownToggle = oToggle; // holds the toggle element
+function AutoSuggestControl(oTextbox, oGhost, oDropDown, oProvider) {
+	this.dropDown = oDropDown; // holds drop down div
     this.typeAhead = oGhost; // holds type ahead div
 	this.userInput = "";
 	this.provider = oProvider;
@@ -33,7 +32,9 @@ AutoSuggestControl.prototype.init = function () {
 
 AutoSuggestControl.prototype.noInput = function (){
 	this.hideTypeAhead();
-	this.hideSuggestions();
+    this.hideSuggestions();
+	this.dropDown.innerHTML = "";
+    this.userInput = "";
 }
 
 AutoSuggestControl.prototype.getSuggestions = function(){
@@ -144,7 +145,7 @@ AutoSuggestControl.prototype.updateDropDown = function(saSuggestions) {
 	var oThis = this;
 	var htmlCode = "";
 	for (var i = 0; i < saSuggestions.length; i++){
-		htmlCode += "<li>" + saSuggestions[i] + "</li>";
+		htmlCode += "<a class=\"list-group-item\">" + saSuggestions[i] + "</a>";
 	}
 	oThis.dropDown.innerHTML = htmlCode;
 
@@ -157,7 +158,7 @@ AutoSuggestControl.prototype.updateDropDown = function(saSuggestions) {
 					oThis.highlighted = j;
 				}
 			}
-			this.className = "current";
+			this.className = "list-group-item current";
 		}
 		oNode.onmouseout = function (){
 			oThis.highlighted = -1;
@@ -171,11 +172,11 @@ AutoSuggestControl.prototype.updateDropDown = function(saSuggestions) {
 		}
 	}
 
-	this.dropDownToggle.className = "dropdown open";
+	this.dropDown.style.visibility = "visible";
 }
 
 AutoSuggestControl.prototype.hideSuggestions = function() {
-	this.dropDownToggle.className = "dropdown";
+	this.dropDown.style.visibility = "hidden";
 	this.highlighted = -1;
 }
 
@@ -189,9 +190,9 @@ AutoSuggestControl.prototype.highlightSuggestion = function () {
 	for (var i = 0; i < oThis.dropDown.childNodes.length; i++) {
 		var oNode = oThis.dropDown.childNodes[i];
 		if (i == oThis.highlighted){
-			oNode.className = "current";
+			oNode.className = "list-group-item current";
 		} else {
-			oNode.className = "";
+			oNode.className = "list-group-item";
 		}
 	}
 	oThis.previewTextBox();
@@ -202,6 +203,6 @@ AutoSuggestControl.prototype.clearHighlights = function () {
 	oThis.highlighted = -1;
 	for (var i = 0; i < oThis.dropDown.childNodes.length; i++) {
 		var oNode = oThis.dropDown.childNodes[i];
-		oNode.className = "";
+		oNode.className = "list-group-item";
 	}
 }

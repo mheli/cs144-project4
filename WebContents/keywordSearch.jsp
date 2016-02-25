@@ -72,14 +72,10 @@
                     </div>
                 </div>
                     <div class="col-sm-11">
-                    <div class="dropdown" id="dropDown">
-                      <ul class="dropdown-menu span-width" aria-labelledby="dropdownMenu1" id="dropDownContent">
-                        <li>Action</li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li><a href="#">Separated link</a></li>
-                      </ul>
-                    </div>
+                        <div class="drop-down-container">
+                            <div class="list-group text-left" id="dropDown">
+                            </div>
+                        </div>
                   </div>
 
                 <div class="col-sm-offset-11">
@@ -89,6 +85,10 @@
                 <input type="hidden" name="numResultsToSkip" value="0" />
                 <input type="hidden" name="numResultsToReturn" value="20" />
             </form>          
+          
+          <c:if test="${fn:length(results) eq '0'}">
+                <div class="alert alert-info" role="alert">Your search - <strong>${param.q}</strong> - did not match any auctions.</div>              
+          </c:if>
           
             <table class="table table-hover">
                 <c:forEach items="${results}" var="result">
@@ -141,7 +141,7 @@
 	<script type="text/javascript" src="js/autoSuggestControl.js"></script>
 	<script type="text/javascript">
     function getSuggestions(){
-		oAutoSuggestControl = new AutoSuggestControl(document.getElementById("searchInput"), document.getElementById("ghostAhead"), document.getElementById("dropDownContent"),new SuggestionRetriever(), document.getElementById("dropDown"));
+		oAutoSuggestControl = new AutoSuggestControl(document.getElementById("searchInput"), document.getElementById("ghostAhead"), document.getElementById("dropDown"),new SuggestionRetriever());
 	}
 	window.addEventListener('DOMContentLoaded', getSuggestions, false);
 	</script>

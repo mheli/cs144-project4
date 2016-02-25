@@ -5,9 +5,6 @@ dd {
 .map-container {
     height: 400px;
 }
-.jumbotron .well {
-    background-color: white;
-}
 
 .open > .dropdown-menu {
 	display: table;
@@ -17,20 +14,3 @@ dd {
 	height: 100%;
 	width: 100%;
 } 
-/*
-html {
-	height:100%;
-}
-
-body {
-	height:100%;
-}
-
-#bidtable {
-	visibility: hidden;
-	position: absolute;
-	border: 1px solid black;
-	background-color: white;
-}
-
-*/
