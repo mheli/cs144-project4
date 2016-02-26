@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>eBay Search</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -35,11 +35,6 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
       
-    <script type="text/javascript">
-		function loadMap(){
-			//dummy function
-		}
-	</script>
   </head>
 
   <body>
@@ -67,7 +62,7 @@
 
       <div class="container">
           <div class="starter-template">
-            <form class="form-horizontal" action="item">
+            <form class="form-horizontal" action="item" accept-charset="utf-8">
             <div class="form-group">
             <div class="col-sm-11">
                 <div class="search-bar">
@@ -85,6 +80,8 @@
   <!-- Main jumbotron for a primary marketing message or call to action -->
     <c:choose>
      <c:when test="${not empty item}"> 
+         <script src="js/map.js" type="text/javascript"></script>
+
     <div class="jumbotron">
       <div class="container">
           <div class="col-md-7">
@@ -178,48 +175,23 @@
             <c:choose>
             <c:when test="${not empty item.latitude}">
             <script type="text/javascript">
-            function loadMap() {
-                var latlng = new google.maps.LatLng(${item.latitude},${item.longitude}); 	  		
-                var myOptions = { 
-                  zoom: 14, // default is 8  
-                  center: latlng, 
-                  mapTypeId: google.maps.MapTypeId.ROADMAP 
-                }; 
-                var map = new google.maps.Map(document.getElementById("map_canvas"),
-                    myOptions); 
-                var contentString = '<div id="content">'+
-                      '<div id="siteNotice">'+
-                      '</div>'+
-                      '<p><strong>${item.name}</strong></p>'+
-                      '<div id="bodyContent">'+
-                      '(${item.latitude}, ${item.longitude})'+
-                      '</div>'+
-                      '</div>';                
-
-                var infowindow = new google.maps.InfoWindow({
-                  content: contentString
-                });
-                var marker = new google.maps.Marker({
-                    position: latlng,
-                    map: map,
-                });
-                  marker.addListener('click', function() {
-                  infowindow.open(map, marker);
-                });
+            function initMap() {
+              var latlng = new google.maps.LatLng(${item.latitude}, ${item.longitude});        
+              coordinatesMap(latlng);
             }
             </script>
             </c:when>
+            <c:when test="${not empty item.location}">
+            <script type="text/javascript">
+            function initMap() {
+              geocodeMap('${item.location}');
+            }
+            </script>          
+            </c:when>
             <c:otherwise>
             <script type="text/javascript">
-            function loadMap() {
-                var latlng = new google.maps.LatLng("34.0621361","-118.4463541");
-                var myOptions = { 
-                  zoom: 0, // default is 8  
-                  center: latlng, 
-                  mapTypeId: google.maps.MapTypeId.ROADMAP 
-                }; 
-                var map = new google.maps.Map(document.getElementById("map_canvas"),
-                    myOptions); 						
+            function initMap() {
+              globalMap();
             }
             </script>
             </c:otherwise>
@@ -229,13 +201,9 @@
       </div>
 
     </div> <!-- /container -->
-                  
-    <script type="text/javascript" 
-    src="http://maps.google.com/maps/api/js?"> 
-	</script>
-    <script type="text/javascript">
-	   window.addEventListener('DOMContentLoaded', loadMap, false);
-    </script>      
+    <!-- Google Maps Geocoding -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=PUTKEYHERE&callback=initMap"
+  type="text/javascript"></script>
 
         </c:when>
         <c:otherwise>
@@ -255,6 +223,6 @@
     <script src="bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="bootstrap/assets/js/ie10-viewport-bug-workaround.js"></script>
-  
+ 
   </body>
 </html>

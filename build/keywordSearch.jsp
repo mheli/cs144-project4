@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>eBay Search</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -62,7 +62,7 @@
     <div class="container">
       <div class="starter-template">
 
-            <form class="form-horizontal" action="search">
+            <form class="form-horizontal" action="search" accept-charset="utf-8">
               <div class="form-group">
                 <div class="col-sm-11">
                     <div class="search-bar">
