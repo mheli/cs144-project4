@@ -7,8 +7,8 @@ The goal of this project is to implement a web site to allow end users easy acce
 ### How do I get set up? ###
 
 Run two commands to build and deploy the project:
-ant build
-ant deploy
+`ant build`
+`ant deploy`
 
 ### Other Info ###
 The javascript implementation of the dropdown for Google Suggest was done without using any javascript libraries. The styling of the dropdown is done with Bootstrap classes.
