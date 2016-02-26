@@ -170,14 +170,7 @@
         <div class="col-md-5">
           <dl>
               <dt>Description</dt>
-              <c:choose>
-                <c:when test="${not empty item.description}">
-                  <dd>${item.description}</dd>
-                </c:when>
-                <c:otherwise>
-                  <dd></dd>
-                </c:otherwise>
-              </c:choose>
+              <dd>${item.description}</dd>
           </dl>
         </div>
         <div class="col-md-5 map-container">
