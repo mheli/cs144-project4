@@ -103,8 +103,8 @@
               <div class="panel-body">     
                   
                 <c:if test="${not empty item.buyPrice}">
-                    <hr>
                     <p><small>Buy price: </small>${item.buyPrice}</p>
+                    <hr>
                 </c:if>
                 <c:choose>
                     <c:when test="${item.numberOfBids eq '0'}">
@@ -113,32 +113,31 @@
                     <c:otherwise>
                         <p><small>Current bid: </small><mark>${item.currently}</mark></p>
                     </c:otherwise>
-                </c:choose>
-                  <p><small><a href="javascript:void(0);" onclick="toggleBids();">${item.numberOfBids} bids</a></small></p>
-                  
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-default" onclick="toggleBids();">${item.numberOfBids} bids</button>
-                      <div class="dropdown" id="bidDropDown">
-                          <table class="table table-hover table-condensed dropdown-menu">
-                              <thead>
-                                  <tr>
-                                      <th>Time</th>
-                                      <th>Amount</th>
-                                      <th>Bidder</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <c:forEach items="${item.bids}" var="bid">
-                                <tr>
-                                    <td>${bid.time}</td>
-                                    <td>${bid.amount}</td>
-                                    <td>${bid.bidderUID} (${bid.rating})</td>
-                                </tr>
-                                  </c:forEach>
-                              </tbody>
-                          </table>
-                      </div>
-                  </div>
+                </c:choose>                  
+              <!-- Single button -->
+              <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                ${item.numberOfBids} bids <span class="caret"></span>
+                </button>
+                <table class="table table-hover table-condensed dropdown-menu bid-table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Amount</th>
+                            <th>Bidder</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach items="${item.bids}" var="bid">
+                      <tr>
+                          <td>${bid.time}</td>
+                          <td class="text-right">${bid.amount}</td>
+                          <td>${bid.bidderUID} (${bid.rating})</td>
+                      </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+              </div>
 
               </div>
             </div>
@@ -150,7 +149,7 @@
     <div class="container">
       <!-- Example row of columns -->
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-2">
             <dl>
                 <dt>Item Id</dt>
                 <dd>${item.itemID}</dd>
@@ -168,7 +167,20 @@
                     </c:forEach>            
             </dl>
         </div>
-        <div class="col-md-8 map-container">
+        <div class="col-md-5">
+          <dl>
+              <dt>Description</dt>
+              <c:choose>
+                <c:when test="${not empty item.description}">
+                  <dd>${item.description}</dd>
+                </c:when>
+                <c:otherwise>
+                  <dd></dd>
+                </c:otherwise>
+              </c:choose>
+          </dl>
+        </div>
+        <div class="col-md-5 map-container">
             <div id="map_canvas"></div>
             <c:choose>
             <c:when test="${not empty item.latitude}">
@@ -182,9 +194,24 @@
                 }; 
                 var map = new google.maps.Map(document.getElementById("map_canvas"),
                     myOptions); 
+                var contentString = '<div id="content">'+
+                      '<div id="siteNotice">'+
+                      '</div>'+
+                      '<p><strong>${item.name}</strong></p>'+
+                      '<div id="bodyContent">'+
+                      '(${item.latitude}, ${item.longitude})'+
+                      '</div>'+
+                      '</div>';                
+
+                var infowindow = new google.maps.InfoWindow({
+                  content: contentString
+                });
                 var marker = new google.maps.Marker({
                     position: latlng,
                     map: map,
+                });
+                  marker.addListener('click', function() {
+                  infowindow.open(map, marker);
                 });
             }
             </script>
@@ -209,25 +236,11 @@
       </div>
 
     </div> <!-- /container -->
-         
-    <div class="container">
-        <dl>
-            <dt>Description</dt>
-            <dd>${item.description}</dd>
-        </dl>
-     </div>
-         
-             <script type="text/javascript" 
+                  
+    <script type="text/javascript" 
     src="http://maps.google.com/maps/api/js?"> 
 	</script>
     <script type="text/javascript">
-        function toggleBids(){
-           var oNode = document.getElementById("bidDropDown");
-           if (oNode.className == "dropdown")
-               oNode.className = "dropdown open";
-           else
-               oNode.className = "dropdown";
-       }
 	   window.addEventListener('DOMContentLoaded', loadMap, false);
     </script>      
 
