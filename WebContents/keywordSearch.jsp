@@ -66,7 +66,7 @@
               <div class="form-group">
                 <div class="col-sm-11">
                     <div class="search-bar">
-                        <input type="text" id="searchInput" class="form-control" name="q"  autocomplete="off" value="${param.q}">
+                        <input type="text" id="searchInput" class="form-control" name="q"  autocomplete="off">
                         <input type="text" id="ghostAhead" class="form-control" autocomplete="off" tabIndex="-1">
                     </div>
                 </div>
