@@ -6,6 +6,7 @@ The goal of this project is to implement a web site to allow end users easy acce
 
 ### How do I get set up? ###
 
+A Google API key is needed for geocoding, replace PUTKEYHERE in getItem.jsp  
 Run two commands to build and deploy the project:
 `ant build`
 `ant deploy`
